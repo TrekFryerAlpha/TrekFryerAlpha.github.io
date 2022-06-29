@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h1>Quick-n-Dirty ADS-B "Radar" Setup</h1>
+<p><strong>SDR Device (pick ONE):</strong></p>
+<ul>
+<li><a href="https://www.amazon.com/gp/product/B01H830YQ6/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&amp;psc=1">RTL2832U DVB-T DAB FM Dongle</a>
+<ul>
+<li>$22 on Amazon</li>
+<li>Works fine ADS-B and other Software Defined Radio applications</li>
+<li>This will need an <a href="https://www.amazon.com/gp/product/B00CTJN480/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&amp;psc=1">MCX Male to SMA Female cable</a> (or a longer cable depending on where you want your antenna)</li>
+</ul>
+</li>
+<li><a href="https://www.amazon.com/gp/product/B07K47P7XD/ref=ox_sc_saved_image_10?smid=A1RUR4PUK3Z4P0&amp;psc=1">AirNav RadarBox FlightStick</a>
+<ul>
+<li>$29 on Amazon</li>
+<li>This dongle is specialized for ADS-B applications</li>
+<li>This will need a standard SMA Male to SMA Female cable</li>
+</ul>
+</li>
+</ul>
+<p><strong>Spare Computer/Compute Device, such as:</strong></p>
+<ul>
+<li>A raspberry pi</li>
+<li>A spare laptop</li>
+<li>A decent gaming laptop with <a href="https://www.virtualbox.org/">Oracle VirtualBox</a></li>
+<li>etc</li>
+</ul>
+<p><strong>Antenna / Antenna Parts (pick ONE)</strong></p>
+<ul>
+<li>DIY "Cantenna"
+<ul>
+<li>Info on how to build the Cantenna can be found <a href="http://www.radioforeveryone.com/p/coketenna-easy-cheap-effec.html">here</a></li>
+<li>You can print this <a href="https://www.thingiverse.com/thing:4444284">ADS-B Cantenna Holder</a></li>
+</ul>
+</li>
+<li>Purchased 1090 Mhz Antenna (Note, I haven't used these, my Cantenna works great)&nbsp;
+<ul>
+<li><a href="https://www.amazon.com/dp/B083XQY2ZP/?coliid=I1LB3DBQWWQU35&amp;colid=2PFJG0XMLJFZK&amp;psc=1&amp;ref_=lv_ov_lig_dp_it">PCB antenna</a></li>
+<li><a href="https://www.amazon.com/dp/B07PFLKM4W/?coliid=I33BQDP2XYXUI7&amp;colid=2PFJG0XMLJFZK&amp;psc=1&amp;ref_=lv_ov_lig_dp_it">Hinged antenna</a></li>
+</ul>
+</li>
+</ul>
+<p><strong>Prepping the Device</strong></p>
+<p><em><strong>Raspberry Pi</strong></em><br />There are a few options for operating systems, go with Lubuntu if you want my instruction:</p>
+<ul>
+<li><a href="https://lubuntu.me/downloads/">Lubuntu</a>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=doqj9ZuAji0">Instructions</a></li>
+</ul>
+</li>
+</ul>
+<p>If you want to play with more SDR tools, look at <a href="https://sourceforge.net/projects/dragonos-pi64/">DragonOS_Pi64</a> for Pi's.</p>
+<p><em><strong>Spare laptop</strong></em><br />So there are a few options here.</p>
+<ul>
+<li>If it's just an older laptop that isn't being used, you can install <a href="https://lubuntu.me/downloads/">Lubuntu</a> on it without much issue, <a href="https://youtu.be/EemUnsg91oQ">instructions here</a></li>
+<li>Another option is to <a href="https://www.ccleaner.com/knowledge/how-to-dual-boot-operating-systems">dual boot</a> the laptop, but that takes a higher level of skill</li>
+</ul>
+<p>If you want to play with more SDR tools, look at <a href="https://sourceforge.net/projects/dragonos-focal/">DragonOS</a> for computers.</p>
+<p>Using Oracle VirtualBox</p>
+<ul>
+<li>Download <a href="https://www.virtualbox.org/">Oracle VirtualBox</a>
+<ul>
+<li>There might be settings related to Virtualization on Windows, if those pop up look at <a href="https://www.computerworld.com/article/2825616/no-hassle-way-to-install-windows-10-with-virtualbox.html">this</a></li>
+</ul>
+</li>
+<li>Download <a href="https://lubuntu.me/downloads/">Lubuntu</a></li>
+<li>Depending on the resources of the device, but good settings for the Virtual Machine are:
+<ul>
+<li>2 cores</li>
+<li>4GB of RAM</li>
+<li>16GB of storage (go with a VHD to make life easier, non-dynamically allocated or whatever for speed)</li>
+</ul>
+</li>
+<li>With the dongle plugged into your computer, click on "Settings"</li>
+<li>Click on the "USB" tab towards the bottom of the tabs</li>
+<li>Make sure "Enable USB Controller" is checked</li>
+<li>Click the "Add new USB filter" (USB with a + symbol) on the right-hand side</li>
+<li>Select the RTL2832U dongle</li>
+</ul>
+<p><strong>Installing the ADS-B Software<br /></strong>(Assuming you're inside of the device, and the device has an internet connection)<br />(Also assuming the dongle is plugged into the device and recognized by the device)</p>
+<ol>
+<li>Open a terminal
+<ul>
+<li>Bottom-left corner, click on the icon, type 'Terminal' (probably QTerminal)</li>
+</ul>
+</li>
+<li>Open Firefox</li>
+<li>In Firefox, search for "readsb gitgub"</li>
+<li>Click on the result from "wiedehopf"</li>
+<li>Scroll until you find "Automatic Install" instructions, click on it</li>
+<li>copy the command line that looks like this: <br /><em>sudo bash -c "$(wget -O - https://github.com/wiedehopf/adsb-scripts/raw/master/readsb-install.sh)"</em></li>
+<li>Right-click and paste the command into the terminal</li>
+<li>Confirm the command was pasted, and press 'Enter'</li>
+<li>The software should be installing</li>
+<li>If the software is installed correctly, it should display a message about setting coordinates:<br /><em>sudo readsb-set-location&nbsp;50.12344 10.23429</em><br />(replace 50.12344 with your lat, and 10.23429 with your long)</li>
+<li>run the command:<br /><br /><em>readsb --interactive<br /><br /></em>or<br /><em><br />readsb --device-type rtlsdr --interactive<br /><br /></em>or<br /><br />follow whatever suggestions the command line makes<br /><br /></li>
+<li>You can navigate to localhost/tar1090/ to see your radar!</li>
+</ol>
+<p>&nbsp;</p>
+</body>
+</html>
